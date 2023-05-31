@@ -163,13 +163,14 @@ ORDER BY S.CUSTOMER_ID;
 -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
 SELECT 
-	S.CUSTOMER_ID, 
+    S.CUSTOMER_ID, 
     SUM(CASE WHEN (S.PRODUCT_ID = 1 OR S.ORDER_DATE BETWEEN ME.JOIN_DATE AND ME.JOIN_DATE+7) THEN M.PRICE*20 ELSE M.PRICE*10 END) AS POINTS
 FROM dannys_diner.SALES S
 INNER JOIN dannys_diner.MENU M
 USING(PRODUCT_ID)
-LEFT JOIN dannys_diner.MEMBERS ME
+INNER JOIN dannys_diner.MEMBERS ME
 ON S.CUSTOMER_ID = ME.CUSTOMER_ID
+WHERE S.ORDER_DATE BETWEEN '2021-01-01' AND '2021-01-31'
 GROUP BY S.CUSTOMER_ID;
 
 
